@@ -4,7 +4,7 @@ import numpy as np
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox, QFileDialog
 import platform
 import wave
-
+import soundfile as sf
 
 class ToneGenerator(QWidget):
     def __init__(self):
@@ -81,21 +81,27 @@ class ToneGenerator(QWidget):
 
         sample_rate = 44100
         num_samples = int(sample_rate * duration)
-        time = np.linspace(0., duration, num_samples)
+        time = np.arange(num_samples) / sample_rate
         tones = 0.3 * np.sin(2 * np.pi * frequency * time)
 
-        file_path, _ = QFileDialog.getSaveFileName(self, "Guardar tono", "", "Archivos WAV (*.wav)")
+        file_path, _ = QFileDialog.getSaveFileName(self, "Guardar tono", "", "Archivos de audio (*.wav *.ogg)")
         if file_path:
             try:
-                with wave.open(file_path, 'w') as wav_file:
-                    wav_file.setnchannels(1)
-                    wav_file.setsampwidth(2)
-                    wav_file.setframerate(sample_rate)
-                    wav_file.writeframes(tones.astype(np.int16).tobytes())
+                file_extension = file_path.split(".")[-1]
+                if file_extension == "wav":
+                    with wave.open(file_path, 'wb') as wav_file:
+                        wav_file.setnchannels(1)
+                        wav_file.setsampwidth(2)
+                        wav_file.setframerate(sample_rate)
+                        wav_file.writeframes(tones.astype(np.int16))
+                elif file_extension == "ogg":
+                    sf.write(file_path, tones, sample_rate)
+                else:
+                    raise ValueError(f"Formato de archivo no compatible: {file_extension}")
+
                 QMessageBox.information(self, "Éxito", "El tono se ha guardado correctamente.")
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"No se pudo guardar el tono.\nError: {str(e)}")
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
