@@ -64,6 +64,26 @@ Este es un programa simple para generar y visualizar tonos de audio utilizando P
 
 1. Clona este repositorio en tu máquina local:
 
+https://github.com/grisuno/sndtone.git
+
+
+2. Navega al directorio:
+
+cd tone-generator
+
+
+3. instala las dependencias usando pip:
+
+pip install -r requirements.txt
+
+
+## Uso
+
+corre le programa con el siguiente comando:
+
+
+python main.py
+
 
 Aparecerá una interfaz gráfica donde puedes ingresar la frecuencia y la duración del tono. Luego, puedes hacer clic en los botones "Tocar" y "Guardar" para reproducir el tono y guardarlo como archivo de audio, respectivamente. Además, puedes visualizar la forma de onda del tono en diferentes tipos de gráficos.
 
