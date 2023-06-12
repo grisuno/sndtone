@@ -123,7 +123,6 @@ class ToneGenerator(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"No se pudo guardar el tono.\nError: {str(e)}")
 
-
     def generate_waveform(self):
         frequency = float(self.frequency_input.text())
         duration = float(self.duration_input.text())
@@ -141,8 +140,6 @@ class ToneGenerator(QWidget):
         y = np.linspace(0, 1, 1000)  # Reducir el tamaño de la matriz en el eje Y
         X, Y = np.meshgrid(x, y)
         Z = np.sin(2 * np.pi * frequency * X)
-
-
 
         # Gráfico de forma de onda en 2D
         plt.subplot(2, 3, 1)
@@ -188,20 +185,29 @@ class ToneGenerator(QWidget):
         ax = fig.add_subplot(111, projection='3d')
         ax.plot_surface(X, Y, Z, cmap='coolwarm', alpha=0.8)
 
-        # Resto de las visualizaciones (sin cambios)
+        x = time[:1000]  # Reducir el tamaño de la matriz en el eje X
+        y = np.linspace(0, 1, 1000)  # Reducir el tamaño de la matriz en el eje Y
+        X, Y = np.meshgrid(x, y)
+        Z = np.sin(2 * np.pi * frequency * X)
+
+        # Gráfico de la onda circular en el agua visto desde arriba en 3D
+        fig = plt.figure(figsize=(8, 6))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.plot_surface(X, Y, Z, cmap='coolwarm', alpha=0.8)
+        ax.set_xlabel('Tiempo (s)')
+        ax.set_ylabel('Tiempo (s)')
+        ax.set_zlabel('Amplitud')
+        ax.set_title('Onda en el agua vista desde arriba')
 
         # Ajustar el diseño de la figura principal y mostrarla
         plt.tight_layout()
-        
-        plt.show()  
-
-        # Ajustar el diseño de la figura principal
-        plt.tight_layout()
-
-        # Mostrar la figura con todas las visualizaciones
         plt.show()
+
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     generator = ToneGenerator()
     generator.show()
     sys.exit(app.exec())
+
