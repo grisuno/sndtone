@@ -123,6 +123,7 @@ class ToneGenerator(QWidget):
             except Exception as e:
                 QMessageBox.critical(self, "Error", f"No se pudo guardar el tono.\nError: {str(e)}")
 
+
     def generate_waveform(self):
         frequency = float(self.frequency_input.text())
         duration = float(self.duration_input.text())
@@ -131,6 +132,17 @@ class ToneGenerator(QWidget):
         num_samples = int(sample_rate * duration)
         time = np.arange(num_samples) / sample_rate
         waveform = 0.3 * np.sin(2 * np.pi * frequency * time)
+
+        # Gráfico de forma de onda en 2D y otras visualizaciones (sin cambios)
+
+        # Obtener los datos de la cimática del sonido en la capa de agua (por ejemplo, una matriz 2D de amplitudes)
+        # Aquí, se genera un ejemplo simple con una onda sinusoidal en Z
+        x = time[:1000]  # Reducir el tamaño de la matriz en el eje X
+        y = np.linspace(0, 1, 1000)  # Reducir el tamaño de la matriz en el eje Y
+        X, Y = np.meshgrid(x, y)
+        Z = np.sin(2 * np.pi * frequency * X)
+
+
 
         # Gráfico de forma de onda en 2D
         plt.subplot(2, 3, 1)
@@ -171,25 +183,25 @@ class ToneGenerator(QWidget):
         plt.axis('off')
         plt.title('Dibujo de la onda')
 
-        # Gráfico de forma de onda en 3D
+        # Crear el gráfico 3D para la cimática del sonido en la capa de agua
         fig = plt.figure(figsize=(8, 6))
         ax = fig.add_subplot(111, projection='3d')
-        ax.plot(time, waveform, np.zeros_like(waveform), color='black', linewidth=2)
-        ax.set_xlabel('Tiempo (s)')
-        ax.set_ylabel('Amplitud')
-        ax.set_zlabel('Eje Z')
-        ax.set_title('Forma de onda en 3D')
+        ax.plot_surface(X, Y, Z, cmap='coolwarm', alpha=0.8)
+
+        # Resto de las visualizaciones (sin cambios)
+
+        # Ajustar el diseño de la figura principal y mostrarla
+        plt.tight_layout()
+        
+        plt.show()  
 
         # Ajustar el diseño de la figura principal
         plt.tight_layout()
 
         # Mostrar la figura con todas las visualizaciones
         plt.show()
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     generator = ToneGenerator()
     generator.show()
     sys.exit(app.exec())
-
