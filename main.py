@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QLineEdi
 from PyQt5.QtGui import QColor
 from PyQt5 import QtGui
 from PyQt5.QtCore import Qt
-
+from mpl_toolkits.mplot3d import Axes3D
 # Manejador de eventos para el desplazamiento de la rueda del mouse
 def wheelEvent(event):
     global freq, angle_per_sample
@@ -132,9 +132,9 @@ class ToneGenerator(QWidget):
         time = np.arange(num_samples) / sample_rate
         waveform = 0.3 * np.sin(2 * np.pi * frequency * time)
 
-        # Gráfico de forma de onda
-        plt.subplot(2, 2, 1)
-        plt.plot(time, waveform)
+        # Gráfico de forma de onda en 2D
+        plt.subplot(2, 3, 1)
+        plt.plot(time, waveform, color='black', linewidth=2)
         plt.xlabel('Tiempo (s)')
         plt.ylabel('Amplitud')
         plt.title('Forma de onda')
@@ -144,31 +144,48 @@ class ToneGenerator(QWidget):
         frequencies = np.linspace(0, sample_rate / 2, num_samples // 2)
         amplitudes = np.abs(fft_spectrum[:num_samples // 2])
 
-        plt.subplot(2, 2, 2)
+        plt.subplot(2, 3, 2)
         plt.plot(frequencies, amplitudes)
         plt.xlabel('Frecuencia (Hz)')
         plt.ylabel('Amplitud')
         plt.title('Espectro de frecuencia')
 
         # Histograma de la forma de onda
-        plt.subplot(2, 2, 3)
+        plt.subplot(2, 3, 3)
         plt.hist(waveform, bins=50, color='skyblue', edgecolor='black')
         plt.xlabel('Amplitud')
         plt.ylabel('Frecuencia')
         plt.title('Histograma de amplitud')
 
         # Visualización de la señal de audio
-        plt.subplot(2, 2, 4)
+        plt.subplot(2, 3, 4)
         plt.specgram(waveform, Fs=sample_rate, cmap='viridis')
         plt.xlabel('Tiempo (s)')
         plt.ylabel('Frecuencia (Hz)')
         plt.title('Espectrograma')
 
-        # Ajustar el diseño de la figura
+        # Dibujo de la forma de onda en 2D
+        plt.subplot(2, 3, (5, 6))
+        plt.plot(waveform, np.zeros_like(waveform), '|', color='black', markersize=1)
+        plt.ylim(-0.1, 0.1)
+        plt.axis('off')
+        plt.title('Dibujo de la onda')
+
+        # Gráfico de forma de onda en 3D
+        fig = plt.figure(figsize=(8, 6))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.plot(time, waveform, np.zeros_like(waveform), color='black', linewidth=2)
+        ax.set_xlabel('Tiempo (s)')
+        ax.set_ylabel('Amplitud')
+        ax.set_zlabel('Eje Z')
+        ax.set_title('Forma de onda en 3D')
+
+        # Ajustar el diseño de la figura principal
         plt.tight_layout()
 
         # Mostrar la figura con todas las visualizaciones
         plt.show()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
