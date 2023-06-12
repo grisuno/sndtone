@@ -2,6 +2,16 @@
 
 This is a simple program for generating and visualizing audio tones using PyQt5 and NumPy. You can specify the frequency and duration of the tone, play it, save it as an audio file, and visualize its waveform in different graphs.
 
+- Generate tones with specified frequency and duration.
+- Play generated tones through the audio output device.
+- Save generated tones as WAV or OGG audio files.
+- Visualize the waveform and spectrogram of the generated tones.
+- Adjust the frequency and duration parameters through user input.
+- Interactive GUI interface built with PyQt5.
+- Handle mouse wheel events for easy frequency adjustment.
+- Error handling for invalid input and file saving errors.
+- Cross-platform compatibility.
+
 ## Requirements
 
 - Python 3.6 or higher
