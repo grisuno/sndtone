@@ -1,8 +1,18 @@
 # API
 
 ## main.py
-- `wheelEvent` (function) `main.py:17` `def wheelEvent(event)`
-- `ToneGenerator.__init__` (method) `main.py:26` `def __init__(self)`
-- `ToneGenerator.play_tone` (method) `main.py:62` `def play_tone(self)`
-- `ToneGenerator.save_tone` (method) `main.py:98` `def save_tone(self)`
-- `ToneGenerator.generate_waveform` (method) `main.py:126` `def generate_waveform(self)`
+
+### wheelEvent (function) `def wheelEvent(event)`
+- Defined: `main.py:17`
+
+### __init__ (method) `def __init__(self)`
+- Defined: `main.py:26`
+
+### play_tone (method) `def play_tone(self)`
+- Defined: `main.py:62`
+
+### save_tone (method) `def save_tone(self)`
+- Defined: `main.py:98`
+
+### generate_waveform (method) `def generate_waveform(self)`
+- Defined: `main.py:126`
